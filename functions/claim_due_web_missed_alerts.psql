@@ -1,0 +1,44 @@
+
+BEGIN
+    RETURN QUERY
+    WITH eligible AS (
+        SELECT
+            n.id,
+            nr.user_id,
+            n.message
+        FROM public.notifications n
+        JOIN public.dose_logs d
+            ON d.id = n.dose_log_id
+        JOIN public.notification_recipients nr
+            ON nr.notification_id = n.id
+        JOIN public.caretaker_assignments ca
+            ON ca.patient_id = n.patient_id
+           AND ca.caretaker_id = nr.user_id
+           AND ca.status = 'active'
+        JOIN public.profiles p
+            ON p.id = nr.user_id
+           AND p.role = 'caretaker'
+        WHERE n.type = 'missed_alert'
+          AND n.channel = 'web'
+          AND n.status = 'pending'
+          AND nr.status = 'pending'
+          AND d.status = 'missed'
+          AND n.scheduled_time <= NOW()
+        ORDER BY n.scheduled_time, n.id
+        LIMIT 20
+        FOR UPDATE OF n SKIP LOCKED
+    ),
+    claimed AS (
+        UPDATE public.notifications n
+        SET status = 'sent'
+        FROM eligible e
+        WHERE n.id = e.id
+        RETURNING n.id
+    )
+    SELECT
+        e.id,
+        e.user_id,
+        e.message
+    FROM eligible e
+    JOIN claimed c ON c.id = e.id;
+END;
