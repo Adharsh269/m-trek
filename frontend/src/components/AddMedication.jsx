@@ -83,7 +83,26 @@ export default function AddMedication({ onCreated, onRefresh }) {
       setSaving(false);
     }
   }
+// styles is added
 
+  const field = {
+    display: "block",
+    width: "100%",
+    boxSizing: "border-box",
+    padding: "10px 12px",
+    border: "1px solid #cbd5e1",
+    borderRadius: 8,
+    fontSize: 15,
+    marginTop: 5,
+  };
+  const button = {
+    background: "#2563eb",
+    color: "white",
+    border: 0,
+    borderRadius: 8,
+    padding: "10px 16px",
+    cursor: "pointer",
+  };
 
   return (
     <div style={{ marginBottom: 16 }}>
