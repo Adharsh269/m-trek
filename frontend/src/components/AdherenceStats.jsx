@@ -2,8 +2,15 @@ export default function AdherenceStats({ doses = [] }) {
   const taken = doses.filter(
     (dose) => dose.status === "taken"
   ).length;
-
- 
+//miss is added
+  const missed = doses.filter(
+    (dose) => dose.status === "missed"
+  ).length;
+//skip is added
+  const skipped = doses.filter(
+    (dose) => dose.status === "skipped"
+  ).length;
+//snoozing is added
   const pending = doses.filter(
     (dose) =>
       dose.status === "pending" ||
@@ -16,7 +23,7 @@ export default function AdherenceStats({ doses = [] }) {
     completed > 0
       ? Math.round((taken / completed) * 100)
       : null;
-
+//checking the stats
   const stats = [
     { label: "Scheduled Doses", value: doses.length },
     { label: "Taken", value: taken },
