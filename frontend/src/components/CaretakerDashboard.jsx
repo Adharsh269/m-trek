@@ -24,6 +24,16 @@ async function apiGet(path) {
   return result;
 }
 
+const dateTime = (value) => value ? new Date(value).toLocaleString() : "Not available";
+const timeOnly = (value) => value ? new Date(value).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "Not available";
+const patientName = (patient) => patient?.patient?.full_name || "Patient";
+function localDateInIndia() {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: "Asia/Kolkata", year: "numeric", month: "2-digit", day: "2-digit"
+  }).formatToParts(new Date());
+  const field = (type) => parts.find((part) => part.type === type)?.value;
+  return `${field("year")}-${field("month")}-${field("day")}`;
+}
 
 export default function CaretakerDashboard({ session, onLogout, loading }) {
   const [view, setView] = useState("overview");
