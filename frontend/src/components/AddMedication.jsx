@@ -57,7 +57,7 @@ export default function AddMedication({ onCreated, onRefresh }) {
         String(end.getMonth() + 1).padStart(2, "0"),
         String(end.getDate()).padStart(2, "0"),
       ].join("-");
-      //seeing the authorized reqs in the frontend
+
       await authorizedRequest(API_URL, {
         method: "POST",
         body: JSON.stringify({
@@ -72,7 +72,7 @@ export default function AddMedication({ onCreated, onRefresh }) {
           active: true,
         }),
       });
-      //sending message
+
       setMessage("Medication added successfully!");
       setName("");
       setOpen(false);
@@ -83,7 +83,6 @@ export default function AddMedication({ onCreated, onRefresh }) {
       setSaving(false);
     }
   }
-// styles is added
 
   const field = {
     display: "block",
